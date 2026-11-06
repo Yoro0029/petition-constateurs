@@ -31,6 +31,8 @@
   label{display:block;font-weight:600;font-size:15px;margin:14px 0 6px}
   .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media (max-width:520px){.row{grid-template-columns:1fr}}
+  select{width:100%;font:inherit;padding:12px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:inherit}
+  select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,133,63,.15)}
   input[type=text],input[type=tel]{width:100%;font:inherit;padding:12px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
   input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,133,63,.15)}
   .hint{font-size:13px;color:var(--muted);margin:4px 0 0}
@@ -83,14 +85,13 @@
         </div>
 
         <label for="ligue">Ligue</label>
-        <input type="text" id="ligue" list="ligues" maxlength="80" placeholder="Ex. : Ligue de Dakar" required>
-        <datalist id="ligues">
-          <option value="Ligue de Dakar"><option value="Ligue de Thiès"><option value="Ligue de Saint-Louis">
-          <option value="Ligue de Diourbel"><option value="Ligue de Louga"><option value="Ligue de Kaolack">
-          <option value="Ligue de Fatick"><option value="Ligue de Kaffrine"><option value="Ligue de Ziguinchor">
-          <option value="Ligue de Kolda"><option value="Ligue de Sédhiou"><option value="Ligue de Tambacounda">
-          <option value="Ligue de Kédougou"><option value="Ligue de Matam">
-        </datalist>
+        <select id="ligue" required>
+          <option value="" selected disabled>Choisissez votre Ligue</option>
+          <option>Ligue de Dakar</option>
+          <option>Ligue de Thiès</option>
+          <option>Ligue du Nord</option>
+          <option>Ligue du Centre</option>
+        </select>
 
         <label for="telephone">Numéro de téléphone</label>
         <input type="tel" id="telephone" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="77 123 45 67" required>
@@ -226,7 +227,7 @@
       consentement: document.getElementById('consent').checked
     };
     if (!data.prenom || !data.nom) return showErr('Veuillez indiquer votre prénom et votre nom.');
-    if (!data.ligue) return showErr('Veuillez indiquer votre Ligue.');
+    if (!data.ligue) return showErr('Veuillez choisir votre Ligue.');
     if (!phoneOk(data.telephone)) return showErr('Veuillez indiquer un numéro de téléphone valide.');
     if (!strokes) return showErr('Veuillez signer dans le cadre prévu.');
     if (!data.consentement) return showErr('Veuillez cocher la case de confirmation.');
