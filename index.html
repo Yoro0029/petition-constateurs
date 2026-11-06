@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pétition — Délai de dépouillement jusqu’au lundi 23 h 59</title>
+<style>
+  :root{
+    --green:#00853f; --green-dark:#005c2b; --yellow:#fdef42; --red:#e31b23;
+    --ink:#1b1f1c; --muted:#5b645e; --line:#d9ded9; --bg:#f4f6f3; --card:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .flag{display:flex;height:6px}.flag span{flex:1}
+  header{background:var(--green-dark);color:#fff;padding:28px 20px 30px}
+  .wrap{max-width:720px;margin:0 auto}
+  .kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin:0 0 8px}
+  h1{font-size:clamp(24px,5.5vw,34px);line-height:1.15;margin:0 0 12px}
+  .by{margin:0;opacity:.9;font-size:15px}
+  .counter{display:inline-flex;align-items:baseline;gap:8px;margin-top:18px;background:rgba(255,255,255,.12);padding:8px 14px;border-radius:999px;font-size:15px}
+  .counter b{font-size:22px;color:var(--yellow)}
+  main{padding:20px 16px 48px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin-bottom:18px}
+  .card h2{font-size:19px;margin:0 0 12px}
+  .ask{border-left:4px solid var(--green);background:#eef7f1;padding:12px 14px;border-radius:0 10px 10px 0;margin:0 0 16px;font-weight:600}
+  .petition p{margin:8px 0}
+  .petition ol{margin:8px 0 12px 20px;padding:0}
+  .petition li{margin:6px 0;font-weight:600}
+  .meta{font-size:14px;color:var(--muted);margin:0 0 4px}
+  details summary{cursor:pointer;color:var(--green-dark);font-weight:600;margin-top:6px}
+  label{display:block;font-weight:600;font-size:15px;margin:14px 0 6px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:520px){.row{grid-template-columns:1fr}}
+  input[type=text],input[type=tel]{width:100%;font:inherit;padding:12px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+  input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,133,63,.15)}
+  .hint{font-size:13px;color:var(--muted);margin:4px 0 0}
+  .sigbox{position:relative;border:1.5px dashed #9aa59d;border-radius:10px;background:#fff;touch-action:none}
+  .sigbox canvas{display:block;width:100%;height:170px;border-radius:10px;cursor:crosshair}
+  .sigline{position:absolute;left:18px;right:18px;bottom:38px;border-bottom:1px solid #c9cfc9;pointer-events:none}
+  .sigph{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:#a5aea7;pointer-events:none;font-size:15px}
+  .sigtools{display:flex;justify-content:flex-end;margin-top:6px}
+  .link{background:none;border:0;color:var(--green-dark);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:4px 0}
+  .check{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:14px;margin-top:18px}
+  .check input{width:20px;height:20px;margin-top:2px;accent-color:var(--green);flex:none}
+  .btn{display:block;width:100%;margin-top:20px;padding:15px;border:0;border-radius:12px;background:var(--green);color:#fff;font:inherit;font-size:17px;font-weight:700;cursor:pointer}
+  .btn:hover{background:var(--green-dark)}
+  .btn[disabled]{opacity:.6;cursor:wait}
+  .err{display:none;margin-top:14px;padding:12px 14px;border-radius:10px;background:#fdecec;color:#8a1016;font-size:15px}
+  .ok{display:none;text-align:center}
+  .ok .big{font-size:44px;line-height:1}
+  .ok h2{margin:10px 0 6px}
+  .share{display:inline-block;margin-top:14px;padding:12px 18px;border-radius:12px;background:#25d366;color:#fff;text-decoration:none;font-weight:700}
+  .privacy{font-size:13px;color:var(--muted);text-align:center;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div class="flag"><span style="background:var(--green)"></span><span style="background:var(--yellow)"></span><span style="background:var(--red)"></span></div>
+<header>
+  <div class="wrap">
+    <p class="kicker">Pétition des amateurs colombophiles du Sénégal</p>
+    <h1>Dépouillement des constateurs : jusqu’au lundi 23 h 59</h1>
+    <p class="by">Initiée par <b>El Hadj Yoro SY</b>, membre du Conseil d’administration de la Fédération Colombophile Sénégalaise</p>
+    <div class="counter"><b id="count">…</b> <span id="countLabel">signataires</span></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="card petition" id="petition"></section>
+
+    <section class="card" id="formCard">
+      <h2>Je signe la pétition</h2>
+      <form id="form" novalidate>
+        <div class="row">
+          <div>
+            <label for="prenom">Prénom</label>
+            <input type="text" id="prenom" autocomplete="given-name" maxlength="60" required>
+          </div>
+          <div>
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" autocomplete="family-name" maxlength="60" required>
+          </div>
+        </div>
+
+        <label for="ligue">Ligue</label>
+        <input type="text" id="ligue" list="ligues" maxlength="80" placeholder="Ex. : Ligue de Dakar" required>
+        <datalist id="ligues">
+          <option value="Ligue de Dakar"><option value="Ligue de Thiès"><option value="Ligue de Saint-Louis">
+          <option value="Ligue de Diourbel"><option value="Ligue de Louga"><option value="Ligue de Kaolack">
+          <option value="Ligue de Fatick"><option value="Ligue de Kaffrine"><option value="Ligue de Ziguinchor">
+          <option value="Ligue de Kolda"><option value="Ligue de Sédhiou"><option value="Ligue de Tambacounda">
+          <option value="Ligue de Kédougou"><option value="Ligue de Matam">
+        </datalist>
+
+        <label for="telephone">Numéro de téléphone</label>
+        <input type="tel" id="telephone" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="77 123 45 67" required>
+        <p class="hint">Un seul signataire par numéro. Votre numéro n’est pas affiché publiquement.</p>
+
+        <label>Signature</label>
+        <div class="sigbox">
+          <canvas id="sig" aria-label="Zone de signature"></canvas>
+          <div class="sigline"></div>
+          <div class="sigph" id="sigph">Signez ici avec le doigt ou la souris</div>
+        </div>
+        <div class="sigtools"><button type="button" class="link" id="clearSig">Effacer la signature</button></div>
+
+        <label class="check">
+          <input type="checkbox" id="consent">
+          <span>Je certifie être amateur colombophile et soutenir cette pétition. J’accepte que mes informations soient transmises à la Fédération Colombophile Sénégalaise dans le seul cadre de cette pétition.</span>
+        </label>
+
+        <button class="btn" id="submit" type="submit">Signer la pétition</button>
+        <div class="err" id="err" role="alert"></div>
+      </form>
+    </section>
+
+    <section class="card ok" id="okCard">
+      <div class="big">✅</div>
+      <h2>Merci, votre signature est enregistrée.</h2>
+      <p id="okText"></p>
+      <p>Faites circuler la pétition auprès des autres amateurs :</p>
+      <a class="share" id="shareWa" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+    </section>
+
+    <p class="privacy">Les données recueillies servent uniquement à remettre la pétition aux instances de la Fédération.</p>
+  </div>
+</main>
+
+<script>
+  var PAGE_URL = location.origin + location.pathname;
+  var PETITION = {"titre":"PÉTITION DES AMATEURS COLOMBOPHILES DU SÉNÉGAL","sousTitre":"Pour la prolongation du délai de dépouillement des constateurs électroniques jusqu’au lundi 23 h 59","initiateur":"El Hadj Yoro SY, membre du Conseil d’administration de la Fédération Colombophile Sénégalaise","destinataires":"Monsieur le Président de la Fédération Colombophile Sénégalaise et la Commission juridique de la Fédération","intro":"Nous, amateurs colombophiles licenciés, soussignés,","considerants":["que le constateur électronique enregistre de manière sûre et horodatée l’arrivée de nos pigeons, et que les données qu’il contient ne peuvent pas être modifiées par l’amateur ;","que la règle actuelle impose le dépouillement des constateurs dans un délai de 24 heures, soit du dimanche, à la fin des constatations, jusqu’au lundi à 12 h 00 ;","que le lundi matin est un jour de travail pour la grande majorité des amateurs, et que nombre d’entre eux résident loin du lieu de dépouillement ;","que ce délai trop court pénalise des amateurs de bonne foi, crée une inégalité entre eux et peut entraîner l’exclusion de pigeons régulièrement constatés ;","qu’un délai prolongé jusqu’au lundi soir ne modifie en rien les résultats enregistrés et ne retarde pas de manière significative la publication des classements ;"],"demandes":["de prolonger le délai de dépouillement des constateurs électroniques jusqu’au lundi à 23 h 59, soit toute la journée du lundi ;","d’inscrire cette modification dans le règlement sportif et de l’appliquer dès les prochaines compétitions ;","d’en informer officiellement toutes les Ligues et tous les amateurs."],"conclusion":"Par notre signature, nous affirmons notre attachement au respect des règles, à la sincérité des compétitions et à l’équité entre tous les amateurs colombophiles du Sénégal."};
+  var API_URL = "https://script.google.com/macros/s/AKfycbzkpjNfGy_Y273AOtOpR6IE32L1CdBfW1yqV3hCQz7gC3LgtPPtobi6TJ3BtFzGNeCJsQ/exec"; // renseigné seulement dans la version statique (site/index.html)
+</script>
+<script>
+(function () {
+  function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+  // Appel au serveur : google.script.run quand la page est servie par Apps Script,
+  // sinon fetch vers l'URL /exec (sans cookies Google, donc fonctionne pour tout le monde).
+  function api(action, data, onOk, onErr) {
+    if (!API_URL && window.google && google.script && google.script.run) {
+      var r = google.script.run.withSuccessHandler(onOk).withFailureHandler(onErr);
+      return action === 'count' ? r.getCount() : r.signPetition(data);
+    }
+    fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: action, data: data })
+    }).then(function (res) { return res.json(); })
+      .then(function (j) { if (j && j.ok) onOk(action === 'count' ? j.count : j); else onErr(new Error((j && j.error) || 'Erreur inconnue.')); })
+      .catch(function () { onErr(new Error('Connexion impossible. Vérifiez votre connexion Internet et réessayez.')); });
+  }
+
+  // ---- Texte de la pétition ----
+  var p = PETITION;
+  var html = '<p class="ask">Nous demandons que le délai de dépouillement des constateurs électroniques soit prolongé jusqu’au <u>lundi à 23 h 59</u>, au lieu du lundi à 12 h 00.</p>' +
+    '<p class="meta"><b>Adressée à :</b> ' + esc(p.destinataires) + '</p>' +
+    '<p>' + esc(p.intro) + '</p>' +
+    '<p><b>Considérant</b> ' + esc(p.considerants[0]) + '</p>' +
+    '<details><summary>Lire la suite des considérants</summary>' +
+      p.considerants.slice(1).map(function(c){ return '<p><b>Considérant</b> ' + esc(c) + '</p>'; }).join('') +
+    '</details>' +
+    '<p style="margin-top:14px"><b>DEMANDONS</b> à la Fédération Colombophile Sénégalaise et à sa Commission juridique :</p>' +
+    '<ol>' + p.demandes.map(function(d){ return '<li>' + esc(d) + '</li>'; }).join('') + '</ol>' +
+    '<p>' + esc(p.conclusion) + '</p>';
+  document.getElementById('petition').innerHTML = '<h2>' + esc(p.sousTitre) + '</h2>' + html;
+
+  // ---- Compteur ----
+  function setCount(n){
+    document.getElementById('count').textContent = n;
+    document.getElementById('countLabel').textContent = n > 1 ? 'signataires' : 'signataire';
+  }
+  api('count', null, setCount, function(){ document.getElementById('count').textContent='—'; });
+
+  // ---- Zone de signature ----
+  var canvas = document.getElementById('sig');
+  var ctx = canvas.getContext('2d');
+  var strokes = 0, drawing = false, last = null;
+  function resize(){
+    var r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    var keep = strokes ? canvas.toDataURL() : null;
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0b1f4a';
+    if (keep) { var img = new Image(); img.onload = function(){ ctx.drawImage(img,0,0,r.width,r.height); }; img.src = keep; }
+  }
+  function pos(e){ var r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  canvas.addEventListener('pointerdown', function(e){
+    e.preventDefault(); drawing = true; last = pos(e);
+    try { canvas.setPointerCapture(e.pointerId); } catch(_){}
+    ctx.beginPath(); ctx.arc(last.x, last.y, 1.1, 0, Math.PI*2); ctx.fillStyle = '#0b1f4a'; ctx.fill();
+    strokes++; document.getElementById('sigph').style.display = 'none';
+  });
+  canvas.addEventListener('pointermove', function(e){
+    if (!drawing) return; e.preventDefault();
+    var pt = pos(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(pt.x, pt.y); ctx.stroke(); last = pt;
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(function(t){ canvas.addEventListener(t, function(){ drawing = false; }); });
+  document.getElementById('clearSig').addEventListener('click', function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height); strokes = 0; document.getElementById('sigph').style.display = '';
+  });
+  window.addEventListener('resize', resize); resize();
+
+  function exportSignature(){
+    // Image réduite, fond blanc, pour un stockage léger
+    var w = 360, h = Math.round(w * canvas.height / canvas.width);
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0,0,w,h); x.drawImage(canvas,0,0,w,h);
+    var out = c.toDataURL('image/png');
+    if (out.length > 45000) out = c.toDataURL('image/jpeg', 0.6);
+    return out;
+  }
+
+  // ---- Envoi ----
+  var form = document.getElementById('form'), err = document.getElementById('err'), btn = document.getElementById('submit');
+  function showErr(m){ err.textContent = m; err.style.display = 'block'; }
+  function phoneOk(v){ var d = v.replace(/\D/g,''); return d.length >= 8 && d.length <= 15; }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault(); err.style.display = 'none';
+    var data = {
+      prenom: document.getElementById('prenom').value.trim(),
+      nom: document.getElementById('nom').value.trim(),
+      ligue: document.getElementById('ligue').value.trim(),
+      telephone: document.getElementById('telephone').value.trim(),
+      consentement: document.getElementById('consent').checked
+    };
+    if (!data.prenom || !data.nom) return showErr('Veuillez indiquer votre prénom et votre nom.');
+    if (!data.ligue) return showErr('Veuillez indiquer votre Ligue.');
+    if (!phoneOk(data.telephone)) return showErr('Veuillez indiquer un numéro de téléphone valide.');
+    if (!strokes) return showErr('Veuillez signer dans le cadre prévu.');
+    if (!data.consentement) return showErr('Veuillez cocher la case de confirmation.');
+    data.signature = exportSignature();
+
+    btn.disabled = true; btn.textContent = 'Envoi en cours…';
+    api('sign', data, function(res){
+        setCount(res.count);
+        document.getElementById('formCard').style.display = 'none';
+        document.getElementById('okText').textContent = data.prenom + ' ' + data.nom + ', vous êtes le signataire n° ' + res.count + '.';
+        var msg = 'Amateurs colombophiles : signez la pétition pour prolonger le délai de dépouillement des constateurs jusqu’au lundi 23 h 59. ' + PAGE_URL;
+        document.getElementById('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+        document.getElementById('okCard').style.display = 'block';
+        window.scrollTo(0, document.getElementById('okCard').offsetTop - 20);
+      }, function(e){
+        btn.disabled = false; btn.textContent = 'Signer la pétition';
+        showErr((e && e.message ? e.message : String(e)).replace(/^Error:\s*/, ''));
+      });
+  });
+})();
+</script>
+</body>
+</html>
