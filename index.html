@@ -173,6 +173,25 @@
   }
   api('count', null, setCount, function(){ document.getElementById('count').textContent='—'; });
 
+  // ---- Une signature par appareil ----
+  // Identifiant aléatoire mémorisé dans le navigateur ; le serveur refuse un 2e envoi avec le même.
+  function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(_){ return null; } }
+  var DEVICE_ID = store('petition_appareil');
+  if (!DEVICE_ID) {
+    DEVICE_ID = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+      : 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+    store('petition_appareil', DEVICE_ID);
+  }
+  function showDone(text){
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('okText').textContent = text;
+    var msg = 'Amateurs colombophiles : signez la pétition pour prolonger le délai de dépouillement des constateurs jusqu’au lundi 23 h 59. ' + PAGE_URL;
+    document.getElementById('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+    document.getElementById('okCard').style.display = 'block';
+  }
+  var ALREADY = 'Une signature a déjà été enregistrée depuis cet appareil. Chaque appareil et chaque numéro ne peuvent signer qu’une seule fois.';
+  if (store('petition_signee')) showDone(ALREADY);
+
   // ---- Zone de signature ----
   var canvas = document.getElementById('sig');
   var ctx = canvas.getContext('2d');
@@ -232,19 +251,19 @@
     if (!strokes) return showErr('Veuillez signer dans le cadre prévu.');
     if (!data.consentement) return showErr('Veuillez cocher la case de confirmation.');
     data.signature = exportSignature();
+    data.appareil = DEVICE_ID;
 
     btn.disabled = true; btn.textContent = 'Envoi en cours…';
     api('sign', data, function(res){
         setCount(res.count);
-        document.getElementById('formCard').style.display = 'none';
-        document.getElementById('okText').textContent = data.prenom + ' ' + data.nom + ', vous êtes le signataire n° ' + res.count + '.';
-        var msg = 'Amateurs colombophiles : signez la pétition pour prolonger le délai de dépouillement des constateurs jusqu’au lundi 23 h 59. ' + PAGE_URL;
-        document.getElementById('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
-        document.getElementById('okCard').style.display = 'block';
+        store('petition_signee', '1');
+        showDone(data.prenom + ' ' + data.nom + ', vous êtes le signataire n° ' + res.count + '.');
         window.scrollTo(0, document.getElementById('okCard').offsetTop - 20);
       }, function(e){
+        var m = (e && e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
+        if (/appareil/.test(m)) { store('petition_signee', '1'); showDone(ALREADY); return; }
         btn.disabled = false; btn.textContent = 'Signer la pétition';
-        showErr((e && e.message ? e.message : String(e)).replace(/^Error:\s*/, ''));
+        showErr(m);
       });
   });
 })();
